@@ -56,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private  LatLng posisiMartabak;
     private LatLng Kontrakan;
     private LatLng posSekarang;
+    private LatLng gedungIlkom;
 
 
     protected synchronized void buildGoogleApiClient() {
@@ -141,7 +142,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         //marker gedung ilkom
-        LatLng gedungIlkom = new LatLng(-6.860418, 107.589889);
+        gedungIlkom = new LatLng(-6.860418, 107.589889);
         mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK"));
 
 
@@ -266,6 +267,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double toSSG = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(posisiSSG),getLong(posisiSSG));
         double toMartabak = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(posisiMartabak),getLong(posisiMartabak));
 
+        //contoh
+        double toGIK = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(gedungIlkom),getLong(gedungIlkom));
+
         System.out.println("Jarak : " + toKontrakan);
         if(toKontrakan >= 0 && toKontrakan <=12){
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -308,7 +312,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             System.out.println("Jarak : " + toSSG);
             mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
             AlertDialog ad = new AlertDialog.Builder(this).create();
-            ad.setMessage("Anda dekat lokasi Kantin 77");
+            ad.setMessage("Anda dekat lokasi SSGC");
             ad.show();
         }
 
@@ -319,7 +323,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             System.out.println("Jarak : " + toMartabak);
             mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
             AlertDialog ad = new AlertDialog.Builder(this).create();
-            ad.setMessage("Anda dekat lokasi Kantin 77");
+            ad.setMessage("Anda dekat lokasi Martabak");
+            ad.show();
+        }
+
+        //contoh
+        if(toGIK >= 0 && toGIK <=12){
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 400 milliseconds
+            v.vibrate(400);
+            System.out.println("Jarak : " + toGIK);
+            mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Anda dekat lokasi GIK");
             ad.show();
         }
     }
