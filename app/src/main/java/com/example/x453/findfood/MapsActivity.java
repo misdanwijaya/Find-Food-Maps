@@ -281,6 +281,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double toKantin = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(kantintujuh),getLong(kantintujuh));
         double toSSG = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(posisiSSG),getLong(posisiSSG));
         double toMartabak = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(posisiMartabak),getLong(posisiMartabak));
+        double toWadoel = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(Wadoel),getLong(Wadoel));
+
+
 
         //contoh
         double toGIK = distFrom((float)location.getLatitude(),(float)location.getLongitude(),getLat(gedungIlkom),getLong(gedungIlkom));
@@ -340,6 +343,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
             AlertDialog ad = new AlertDialog.Builder(this).create();
             ad.setMessage("Anda dekat lokasi Martabak");
+            ad.show();
+        }
+
+        if(toWadoel >= 0 && toWadoel <=12){
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 400 milliseconds
+            v.vibrate(400);
+            System.out.println("Jarak : " + toWadoel);
+            mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Anda dekat lokasi Warung Jadoel");
             ad.show();
         }
 
