@@ -96,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected  void  createLocationRequest(){
         mLocationRequest = new LocationRequest();
         //10 detik sekli minta lokasi (10000ms = 10 detik)
-        mLocationRequest.setInterval(1000000);
+        mLocationRequest.setInterval(10000);
         //tapi tidak boleh cepat dari 5 detik
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
