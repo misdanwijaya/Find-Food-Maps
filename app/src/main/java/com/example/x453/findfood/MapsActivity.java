@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.Manifest;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,LocationListener,
@@ -133,6 +134,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         buildGoogleApiClient();
         createLocationRequest();
+
+        //marquee
+        /*TextView marque = (TextView) this.findViewById(R.id.marque_text);
+        marque.setSelected(true);*/
+
     }
     /**
      * Manipulates the map once available.
@@ -146,6 +152,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //map satelite mode
+        //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         //untuk tempat makan
         wdMap = googleMap;
