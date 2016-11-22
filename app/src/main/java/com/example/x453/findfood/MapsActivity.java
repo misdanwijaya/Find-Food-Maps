@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -61,6 +62,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng Kontrakan;
     private LatLng posSekarang;
     private LatLng gedungIlkom;
+
+    //nilai
+    int nilaiGIKL = 0;
+    int nilaiGIKU = 0;
+
+    int nilaiPadangL = 0;
+    int nilaiPadangU = 0;
+
+    int nilaiKantinL = 0;
+    int nilaiKantinU = 0;
+
+    int nilaiSSGL = 0;
+    int nilaiSSGU = 0;
+
+    int nilaiMartabakL = 0;
+    int nilaiMartabakU = 0;
+
+    int nilaiWadulL = 0;
+    int nilaiWadulU = 0;
+
 
 
     protected synchronized void buildGoogleApiClient() {
@@ -150,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //marker gedung ilkom
         gedungIlkom = new LatLng(-6.860418, 107.589889);
-        mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK"));
+        mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK").snippet("Like " + nilaiGIKL + "; Unlike " + nilaiGIKU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
 
         // Set kamera sesuai batas UPI
@@ -159,31 +180,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //contoh
         //marker kontrakan
         Kontrakan = new LatLng(-6.8663673, 107.5918008);
-        mKontrakan.addMarker(new MarkerOptions().position(Kontrakan).title("Kontrakan"));
+        mKontrakan.addMarker(new MarkerOptions().position(Kontrakan).title("Kontrakan").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         poisisirumah = new LatLng(-6.9535871,107.66612);
-        rumah.addMarker(new MarkerOptions().position(poisisirumah).title("Rumah"));
+        rumah.addMarker(new MarkerOptions().position(poisisirumah).title("Rumah").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker lokasi tempat makan
         //marker warung jadoel
         Wadoel = new LatLng(-6.8649716,107.5936292);
-        wdMap.addMarker(new MarkerOptions().position(Wadoel).title("Warung Jadoel Cafe"));
+        wdMap.addMarker(new MarkerOptions().position(Wadoel).title("Warung Jadoel Cafe").snippet("Like " + nilaiWadulL + "; Unlike " + nilaiWadulU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker Padang Omuda
         PadangO = new LatLng(-6.8658617,107.5916296);
-        PadangOmuda.addMarker(new MarkerOptions().position(PadangO).title("Rumah Makan Padang Omuda"));
+        PadangOmuda.addMarker(new MarkerOptions().position(PadangO).title("Rumah Makan Padang Omuda").snippet("Like " + nilaiPadangL + "; Unlike " + nilaiPadangU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker kantin 77
         kantintujuh = new LatLng(-6.863624,107.589367);
-        kantinT.addMarker(new MarkerOptions().position(kantintujuh).title("Kantin 77"));
+        kantinT.addMarker(new MarkerOptions().position(kantintujuh).title("Kantin 77").snippet("Like " + nilaiKantinL + "; Unlike " + nilaiKantinU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker SSG
         posisiSSG = new LatLng(-6.8637613,107.5898821);
-        ssg.addMarker(new MarkerOptions().position(posisiSSG).title("SSGC"));
+        ssg.addMarker(new MarkerOptions().position(posisiSSG).title("SSGC").snippet("Like " + nilaiSSGL + "; Unlike " + nilaiSSGU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker martabak
         posisiMartabak = new LatLng(-6.864408,107.5921445);
-        martabak.addMarker(new MarkerOptions().position(posisiMartabak).title("Martabak lezat Group Bandung"));
+        martabak.addMarker(new MarkerOptions().position(posisiMartabak).title("Martabak lezat Group Bandung").snippet("Like " + nilaiMartabakL + "; Unlike " + nilaiMartabakU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
 
         // Set kamera sesuai batas UPI
@@ -194,7 +215,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //posisi sekarang
         posSekarang = new LatLng(-6.8663673, 107.5918008);
 
-        mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("PosSekarang").flat(true));
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.walk);
+        mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("PosSekarang").flat(true).icon(icon));
 
         //set kamera sesuai batas di Ilkom
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posSekarang, 17));
