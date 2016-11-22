@@ -1,7 +1,12 @@
 package com.example.x453.findfood;
+
 import android.app.Notification;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Vibrator;
 import android.renderscript.Double2;
@@ -27,21 +32,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.Manifest;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,LocationListener,
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        SensorEventListener {
 
     private static final int MY_PERMISSIONS_REQUEST = 99;//int bebas, maks 1 byte
     private GoogleMap mMap;
     private Marker mPosSekarang;
-    GoogleApiClient mGoogleApiClient ;
+    GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     LocationRequest mLocationRequest;
+
+    private SensorManager sm;
+    private Sensor senAccel;
 
     //untuk rumah makan
     private GoogleMap wdMap;
@@ -59,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng kantintujuh;
     private LatLng PadangO;
     private LatLng posisiSSG;
-    private  LatLng posisiMartabak;
+    private LatLng posisiMartabak;
     private LatLng Kontrakan;
     private LatLng posSekarang;
     private LatLng gedungIlkom;
@@ -83,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int nilaiWadulL = 0;
     int nilaiWadulU = 0;
 
+    double ax = 0, ay = 0, az = 0;
 
 
     protected synchronized void buildGoogleApiClient() {
@@ -101,9 +112,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // cek apakah sudah diijinkan oleh user, jika belum tampilkan dialog
-        if (ActivityCompat.checkSelfPermission (this,android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED )
-        {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST);
@@ -115,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mLocationRequest, this);
     }
 
-    protected  void  createLocationRequest(){
+    protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         //10 detik sekli minta lokasi (10000ms = 10 detik)
         mLocationRequest.setInterval(10000);
@@ -129,6 +139,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        //cek apakah sensor tersedia
+        sm = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
+        senAccel = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+
+        if (senAccel != null) {
+            // ada sensor accelerometer!
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Sukses, device punya sensor accelerometer!");
+            ad.show();
+        } else {
+            // gagal, tidak ada sensor accelrometer.
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Tidak ada sensor accelerometer!");
+            ad.show();
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -140,6 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         marque.setSelected(true);*/
 
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -175,12 +204,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //batas lokasi UPI
         //urutan harus kiri bawah, kanan atas kotak
         LatLngBounds UPI = new LatLngBounds(
-                new LatLng(-6.863273, 107.587212),new LatLng(-6.858025, 107.597839));
+                new LatLng(-6.863273, 107.587212), new LatLng(-6.858025, 107.597839));
 
 
         //marker gedung ilkom
         gedungIlkom = new LatLng(-6.860418, 107.589889);
-        mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK").snippet("Like " + nilaiGIKL + "; Dislike " + nilaiGIKU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK").snippet("Like " + nilaiGIKL + "; Dislike " + nilaiGIKU).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
 
         // Set kamera sesuai batas UPI
@@ -191,29 +220,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Kontrakan = new LatLng(-6.8663673, 107.5918008);
         mKontrakan.addMarker(new MarkerOptions().position(Kontrakan).title("Kontrakan").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-        poisisirumah = new LatLng(-6.9535871,107.66612);
+        poisisirumah = new LatLng(-6.9535871, 107.66612);
         rumah.addMarker(new MarkerOptions().position(poisisirumah).title("Rumah").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker lokasi tempat makan
         //marker warung jadoel
-        Wadoel = new LatLng(-6.8649716,107.5936292);
-        wdMap.addMarker(new MarkerOptions().position(Wadoel).title("Warung Jadoel Cafe").snippet("Like " + nilaiWadulL + "; Dislike " + nilaiWadulU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        Wadoel = new LatLng(-6.8649716, 107.5936292);
+        wdMap.addMarker(new MarkerOptions().position(Wadoel).title("Warung Jadoel Cafe").snippet("Like " + nilaiWadulL + "; Dislike " + nilaiWadulU).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker Padang Omuda
-        PadangO = new LatLng(-6.8658617,107.5916296);
-        PadangOmuda.addMarker(new MarkerOptions().position(PadangO).title("Rumah Makan Padang Omuda").snippet("Like " + nilaiPadangL + "; Dislike " + nilaiPadangU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        PadangO = new LatLng(-6.8658617, 107.5916296);
+        PadangOmuda.addMarker(new MarkerOptions().position(PadangO).title("Rumah Makan Padang Omuda").snippet("Like " + nilaiPadangL + "; Dislike " + nilaiPadangU).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker kantin 77
-        kantintujuh = new LatLng(-6.863624,107.589367);
-        kantinT.addMarker(new MarkerOptions().position(kantintujuh).title("Kantin 77").snippet("Like " + nilaiKantinL + "; Dislike " + nilaiKantinU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        kantintujuh = new LatLng(-6.863624, 107.589367);
+        kantinT.addMarker(new MarkerOptions().position(kantintujuh).title("Kantin 77").snippet("Like " + nilaiKantinL + "; Dislike " + nilaiKantinU).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker SSG
-        posisiSSG = new LatLng(-6.8637613,107.5898821);
-        ssg.addMarker(new MarkerOptions().position(posisiSSG).title("SSGC").snippet("Like " + nilaiSSGL + "; Dislike " + nilaiSSGU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        posisiSSG = new LatLng(-6.8637613, 107.5898821);
+        ssg.addMarker(new MarkerOptions().position(posisiSSG).title("SSGC").snippet("Like " + nilaiSSGL + "; Dislike " + nilaiSSGU).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         //marker martabak
-        posisiMartabak = new LatLng(-6.864408,107.5921445);
-        martabak.addMarker(new MarkerOptions().position(posisiMartabak).title("Martabak lezat Group Bandung").snippet("Like " + nilaiMartabakL + "; Dislike " + nilaiMartabakU ).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        posisiMartabak = new LatLng(-6.864408, 107.5921445);
+        martabak.addMarker(new MarkerOptions().position(posisiMartabak).title("Martabak lezat Group Bandung").snippet("Like " + nilaiMartabakL + "; Dislike " + nilaiMartabakU).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
 
         // Set kamera sesuai batas UPI
@@ -226,6 +255,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.walk);
         mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("I'm Here").flat(true).icon(icon));
+
 
         //set kamera sesuai batas di Ilkom
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posSekarang, 17));
@@ -442,4 +472,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return Float.parseFloat(sLong);
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        // menangkap perubahan nilai sensor
+        if (event.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
+            ax=event.values[0];
+            ay=event.values[1];
+            az=event.values[2];
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
