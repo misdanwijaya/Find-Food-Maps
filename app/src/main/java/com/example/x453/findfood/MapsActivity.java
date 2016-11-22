@@ -95,6 +95,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     double ax = 0, ay = 0, az = 0;
 
+    int tanda =0;
+    int tanda2 =0;
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -301,6 +303,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        sm.registerListener(this, senAccel, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sm.unregisterListener(this);
+    }
+
+
+    @Override
     protected void onStop(){
         mGoogleApiClient.disconnect();
         super.onStop();
@@ -419,7 +435,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         //contoh
-        if(toGIK >= 0 && toGIK <=12){
+        if(toGIK >= 5 && toGIK <=12){
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 400 milliseconds
             v.vibrate(400);
@@ -428,6 +444,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             AlertDialog ad = new AlertDialog.Builder(this).create();
             ad.setMessage("Anda dekat lokasi GIK");
             ad.show();
+        }
+        else if (toGIK >= 0 && toGIK <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiGIKL = nilaiGIKL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiGIKU = nilaiGIKU + 1;
+            }
         }
 
         if(toRumah >= 0 && toRumah <=12){
