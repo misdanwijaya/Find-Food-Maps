@@ -216,7 +216,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         posSekarang = new LatLng(-6.8663673, 107.5918008);
 
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.walk);
-        mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("PosSekarang").flat(true).icon(icon));
+        mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("I'm Here").flat(true).icon(icon));
 
         //set kamera sesuai batas di Ilkom
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posSekarang, 17));
