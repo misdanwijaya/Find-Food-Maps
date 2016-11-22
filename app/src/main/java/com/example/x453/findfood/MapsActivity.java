@@ -390,6 +390,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ad.show();
         }
 
+        else if (toPadangO >= 0 && toPadangO <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiPadangL = nilaiPadangL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiPadangU = nilaiPadangU + 1;
+            }
+        }
+
         if(toKantin >= 0 && toKantin <=12){
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 400 milliseconds
@@ -399,6 +419,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             AlertDialog ad = new AlertDialog.Builder(this).create();
             ad.setMessage("Anda dekat lokasi Kantin 77");
             ad.show();
+        }
+
+        else if (toKantin >= 0 && toKantin <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiKantinL = nilaiKantinL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiKantinU = nilaiKantinU + 1;
+            }
         }
 
         if(toSSG >= 0 && toSSG <=12){
@@ -412,6 +452,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ad.show();
         }
 
+        else if (toSSG >= 0 && toSSG <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiSSGL = nilaiSSGL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiSSGU = nilaiSSGU + 1;
+            }
+        }
+
+
+
         if(toMartabak >= 0 && toMartabak <=12){
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 400 milliseconds
@@ -421,6 +483,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             AlertDialog ad = new AlertDialog.Builder(this).create();
             ad.setMessage("Anda dekat lokasi Martabak");
             ad.show();
+        }
+
+        else if (toMartabak >= 0 && toMartabak <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiMartabakL = nilaiMartabakL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiMartabakU = nilaiMartabakU + 1;
+            }
         }
 
         if(toWadoel >= 0 && toWadoel <=12){
@@ -434,6 +516,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ad.show();
         }
 
+        else if (toWadoel >= 0 && toWadoel <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiWadulL = nilaiWadulL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiWadulU = nilaiWadulU + 1;
+            }
+        }
+
         //contoh
         if(toGIK >= 5 && toGIK <=12){
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -445,6 +547,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ad.setMessage("Anda dekat lokasi GIK");
             ad.show();
         }
+
         else if (toGIK >= 0 && toGIK <= 5){
 
             if (ay >= 10 && tanda == 0){
@@ -474,6 +577,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             AlertDialog ad = new AlertDialog.Builder(this).create();
             ad.setMessage("Anda dekat lokasi");
             ad.show();
+        }
+
+        else if (toRumah >= 0 && toRumah <= 5){
+
+            if (ay >= 10 && tanda == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Menyukai");
+                ad.show();
+                tanda = 1;
+                nilaiGIKL = nilaiGIKL + 1;
+            }
+
+            else if (ax >= 5 && tanda2 == 0){
+                AlertDialog ad = new AlertDialog.Builder(this).create();
+                ad.setMessage("Anda Tidak Menyukai");
+                ad.show();
+                tanda2=1;
+
+                nilaiGIKU = nilaiGIKU + 1;
+            }
         }
     }
 
